@@ -9,10 +9,19 @@ Ao entra na pagina de login é só acionar o botão central da sua pokebola e cl
 
 Após se cadastrar como um novo usuário é só fazer seu login e começar a caçar pokemons para se tornar um verdadeiro treinador pokemon!
 
+## Preview
 
+![Tela Inicial](https://github.com/Anderson-sl/pokeapp/blob/main/telas/tela-1.png)
 
+![Tela de Login](https://github.com/Anderson-sl/pokeapp/blob/master/telas/tela_1_login.png?raw=true)
 
+![Tela de Cadastro](https://github.com/Anderson-sl/pokeapp/blob/master/telas/tela_cadastro.png?raw=true)
 
+![Tela Home](https://github.com/Anderson-sl/pokeapp/blob/master/telas/tela_home.png?raw=true)
+
+![Tela de dados do Usuario](https://github.com/Anderson-sl/pokeapp/blob/master/telas/tela_dados_usuarios.png?raw=true)
+
+![Tela de Captura de Pokémons](https://github.com/Anderson-sl/pokeapp/blob/master/telas/tela_capturar.png?raw=true)
 
 
 
