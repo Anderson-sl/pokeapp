@@ -13,15 +13,15 @@ Após se cadastrar como um novo usuário é só fazer seu login e começar a ca�
 
 ![Tela Inicial](https://github.com/Anderson-sl/pokeapp/blob/main/telas/tela-1.png)
 
-![Tela de Login](https://github.com/Anderson-sl/pokeapp/blob/master/telas/tela_1_login.png?raw=true)
+![Tela de Login](https://github.com/Anderson-sl/pokeapp/blob/main/telas/tela_1_login.png?raw=true)
 
-![Tela de Cadastro](https://github.com/Anderson-sl/pokeapp/blob/master/telas/tela_cadastro.png?raw=true)
+![Tela de Cadastro](https://github.com/Anderson-sl/pokeapp/blob/main/telas/tela_cadastro.png?raw=true)
 
-![Tela Home](https://github.com/Anderson-sl/pokeapp/blob/master/telas/tela_home.png?raw=true)
+![Tela Home](https://github.com/Anderson-sl/pokeapp/blob/main/telas/tela_home.png?raw=true)
 
-![Tela de dados do Usuario](https://github.com/Anderson-sl/pokeapp/blob/master/telas/tela_dados_usuarios.png?raw=true)
+![Tela de dados do Usuario](https://github.com/Anderson-sl/pokeapp/blob/main/telas/tela_dados_usuarios.png?raw=true)
 
-![Tela de Captura de Pokémons](https://github.com/Anderson-sl/pokeapp/blob/master/telas/tela_capturar.png?raw=true)
+![Tela de Captura de Pokémons](https://github.com/Anderson-sl/pokeapp/blob/main/telas/tela_capturar.png?raw=true)
 
 
 
