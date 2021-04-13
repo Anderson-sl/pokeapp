@@ -7,9 +7,9 @@
     <meta name="description" content="">
     <meta name="author" content="Anderson dos Santos">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
-    <link rel="stylesheet" href="{{MAIN_PATH}}resources/css/app.css">
-    <script type="text/javascript" src="{{MAIN_PATH}}resources/js/jquery-3.5.1.min.js"></script>
-    <script type="text/javascript" src="{{MAIN_PATH}}resources/js/app.js"></script>
+    <link rel="stylesheet" href="{{ url(mix('css/app.css')) }}">
+    <script type="text/javascript" src="{{ url(mix('js/jquery-3.5.1.min.js')) }}"></script>
+    <script type="text/javascript" src="{{ url(mix('js/app.js')) }}"></script>
 </head>
 <body>
 @include('templates.header_full')
