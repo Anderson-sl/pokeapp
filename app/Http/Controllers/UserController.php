@@ -169,7 +169,7 @@ class UserController extends Controller
     public function exit(Request $request)
     {
         $request->session()->pull('user');
-        return view('index');
+        return redirect()->route('user.index');
     }
 
     public function showPokemons()
