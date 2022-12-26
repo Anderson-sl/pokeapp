@@ -57,6 +57,8 @@ $(document).ready(function(){
 			'dateType':'json',
 			'data':$('#form-cadastro').serialize(),
 			'success':function(e){
+				alert(`Success:`);
+				console.log(e);
 				let feedback =  JSON.parse(e);
 				if(feedback.status){
 					$("#usuario-cadastro").removeClass("erro");
@@ -74,7 +76,8 @@ $(document).ready(function(){
 				}
 			},
 			'error':function(e){
-				console.log(JSON.parse(e));
+				alert(`Error:`);
+				console.log(e);
 			}
 		});
 		

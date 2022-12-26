@@ -8,35 +8,95 @@ use Illuminate\Database\Eloquent\Model;
 class Pokemon extends Model
 {
     use HasFactory;
-    protected $table = 'tbpokemons';
+    protected $table = 'pokemons';
+    public $incrementing = false;
+    protected $primaryKey = 'pkm_id';
+    protected $fillable = [
+        'pkm_id',
+        'pkm_name',
+        'pkm_species',
+        'pkm_base_experience',
+        'pkm_height',
+        'pkm_weight',
+        'pkm_image',
+        'pkm_url',
+    ];
 
+    public function abilities()
+    {
+        return $this->belongsToMany(
+            Abilities::class,
+            'pokemon_abilities',
+            'pkm_abt_pokemon',
+            'pkm_abt_abilities'
+        );
+    }
 
-	public static function showAll(int $offset = 1,int $limit = 15)
-	{
-		$size = $offset + $limit;
+    public function types()
+    {
+        return $this->belongsToMany(
+            PokemonType::class,
+            'pokemon_types_pokemons',
+            'typ_pkm_pokemon',
+            'typ_pkm_type'
+        );
+    }
+
+    public function pokemonsRandom($limit = 10)
+    {
+        $total_pokemons = 100;
+        $count_interation = 0;
+        $ids_pokemons = [];
+        $length_max = $limit;
+        while (count($ids_pokemons) < $length_max && $count_interation < $total_pokemons) {
+            $id = rand(1, 100); 
+            if (! in_array($id, $ids_pokemons)) {
+                $ids_pokemons[] = $id; 
+            }
+        }
+
+        return $this->whereIn('pkm_id', $ids_pokemons)->get();
+    }
+
+    public function random($limit = 20)
+    {
+		if(gettype($limit) != 'integer'){
+			$limit = 0;
+		}
+
+        $offset = 0;
 		$return = [];
-		$ch = curl_init();
-		for ($i=$offset; $i < $size+1; $i++) { 
-			curl_setopt($ch, CURLOPT_URL, "https://pokeapi.co/api/v2/pokemon/{$i}");
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
-			 array_push($return, json_decode(curl_exec($ch)));
+        //httpGet("https://pokeapi.co/api/v2/pokemon?offset=".$offset."&limit=".$limit);
+		//$response = httpGet("https://pokeapi.co/api/v2/pokemon?offset=".$offset."&limit=".$limit);
+        for ($interable = 1; $interable <= $limit ; $interable++) {
+            $url = getUrlBasePokemon()."pokemon/$interable";
+            $object = httpGet($url);
+            $pokemon = (new Pokemon)->fill([
+                'pkm_id' => $object->id,
+                'pkm_name' => $object->name,
+                'pkm_species' => $object->species->name,
+                'pkm_base_experience' => $object->base_experience,
+                'pkm_height' => $object->height,
+                'pkm_weight' => $object->weight,
+                'pkm_image' => @$object->sprites->other->dream_world->front_default ?? '',
+                'pkm_url' => getUrlBasePokemon().'pokemon/'.$object->id,
+            ]);
+            //createPokemon($object);
+            $return[] = $pokemon;
 		}
 
 		return $return;
-	}
+        $total_pokemons = 100;
+        $count_interation = 0;
+        $ids_pokemons = [];
+        $length_max = $limit;
+        while (count($ids_pokemons) < $length_max && $count_interation < $total_pokemons) {
+            $id = rand(1, 100); 
+            if (! in_array($id, $ids_pokemons)) {
+                $ids_pokemons[] = $id; 
+            }
+        }
 
-	public static function find(string $param)
-	{
-		try{
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, "https://pokeapi.co/api/v2/pokemon/{$param}");
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
-			$return = curl_exec($ch);		
-
-			return is_null(json_decode($return)) ? false : array(json_decode($return));
-		}catch(Exception $e){
-			return false;
-		}
-	}
-
+        return $this->whereIn('pkm_id', $ids_pokemons)->get();
+    }
 }

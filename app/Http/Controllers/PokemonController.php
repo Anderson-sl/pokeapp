@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Session;
 
 class PokemonController extends Controller
 {
+    private $model;
+    public function __construct($arg = null)
+    {
+        $this->model = new Pokemon();
+    }
     /**
      * Display a listing of the resource.
      *
@@ -37,13 +42,24 @@ class PokemonController extends Controller
     public function store(Request $request)
     {
         $id_pokemon = (explode(',', $request->id_pokemon));
-        $ar = Pokemon::find($id_pokemon[0]);
+        $ar = $this->model->find($id_pokemon[0]);
 
-        $pokemon = new Pokemon();
-        $pokemon->index = intval($id_pokemon[0]);
-        $pokemon->id_user = (Session::get('user'))->id;
+        $this->model->index = intval($id_pokemon[0]);
+        $this->model->id_user = (Session::get('user'))->id;
 
-        $result = $pokemon->save() ? json_encode(["status"=>true, "message"=>"O pokemon {$id_pokemon[1]} foi capturado com sucesso"],JSON_PRETTY_PRINT) : json_encode(["status"=>true, "message"=>"O pokemon {$id_pokemon[1]} não foi capturado"],JSON_PRETTY_PRINT);
+        $result = $this->model->save() ? 
+            json_encode(
+                [
+                    "status"=>true,
+                    "message"=>"O pokemon {$id_pokemon[1]} foi capturado com sucesso"
+                ], JSON_PRETTY_PRINT
+            ) :
+            json_encode(
+                [
+                    "status"=>true,
+                    "message"=>"O pokemon {$id_pokemon[1]} não foi capturado"
+                ], JSON_PRETTY_PRINT
+            );
         echo $result;
         return;
     }
@@ -98,11 +114,44 @@ class PokemonController extends Controller
         return back()->with('feedback','Registro excluído com sucesso');
     }
 
+    public function showPokemons(Request $request)
+    {
+        if(!$this->validateSession()){
+            return view('index');
+        }
+
+        $offset = $request->offset ?? 0;
+        $limit = $request->limit ?? 20;
+        $pokemon = new Pokemon();
+        return view('pokemons',[
+            'pokemons' => $pokemon->random($limit)
+        ]);
+    }
+
     public function findByName(Request $request)
     {
-        $ar = $request->pokemon == '' ? Pokemon::showAll() : Pokemon::find($request->pokemon);
+        $pokemons = $request->pokemon == '' ? 
+            $this->model->pokemonsRandom() :
+            $this->model->where('pkm_name', $request->pokemon)->get();
+
+        if ($pokemons->count() > 0) {
+            return view('pokemons',[
+                'pokemons'=> $pokemons
+            ]);
+        }
+
+        $pokemons = getPokemonApi($request->pokemon);
+
+        if (! $pokemons) {
+            return view('pokemons',[
+                'pokemons'=> []
+            ]);
+        }
+
+        $pokemons = [createPokemon($pokemons)];
+        
         return view('pokemons',[
-            'pokemons'=> $ar
+            'pokemons'=> $pokemons
         ]);
     }
 }

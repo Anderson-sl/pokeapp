@@ -35,22 +35,22 @@
 
                     <div class='img-pokemon' id='img-pokemon'>
 
-                        <img src="{{$pokemon->sprites->other->dream_world->front_default}}" title=''>
+                        <img src='{{$pokemon->pkm_image}}' title='{{$pokemon->pkm_name}}'>
                     </div>
                     <div class='name-pokemon'>
-                        <p>{{$pokemon->name}}</p>
+                        <p>{{$pokemon->pkm_name}}</p>
                     </div>
                     <div class='atributos-pokemon'>
                         <div class='container-organiza'>
                             <p>Experiencia: </p>
-                            <b>{{$pokemon->base_experience}}
+                            <b>{{$pokemon->pkm_base_experience}}
                             </b>
                         </div>
                         <div class='container-organiza'>
                             <p>Tipo: </p>
                             <b>
                                 @foreach($pokemon->types as $type)
-                                    [ {{$type->type->name}} ]
+                                    [ {{$type->pkm_typ_name}} ]
                                 @endforeach
                             </b>
                         </div>
@@ -58,7 +58,7 @@
                             <p>Habilidades: </p>
                             <b>
                                 @foreach($pokemon->abilities as $ability)
-                                 [ {{$ability->ability->name}} ]
+                                 [ {{$ability->abt_name}} ]
                                 @endforeach
                             </b>
                         </div>

@@ -16,7 +16,7 @@ use App\Http\Controllers\PokemonController;
 */
 /*GET*/
 Route::get('/',[UserController::class,'index'])->name('user.index');
-Route::get('/cacar_pokemon',[UserController::class,'showPokemons'])->name('user.show.pokemons');
+Route::get('/cacar_pokemon',[PokemonController::class,'showPokemons'])->name('user.show.pokemons');
 Route::get('/exit',[UserController::class,'exit'])->name('user.exit');
 /*POST*/
 Route::post('/usuario/cadastro/validaLogin',[UserController::class,'validaLogin'])->name('user.valida.login');

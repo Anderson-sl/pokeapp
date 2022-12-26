@@ -17,8 +17,7 @@ class UserController extends Controller
      */
     public function index()
     {
-
-       return $this->validateSession() ? view('home') : view('index');
+        return $this->validateSession() ? view('home') : view('index');
     }
 
     public function validaLogin(Request $request)
@@ -172,23 +171,17 @@ class UserController extends Controller
         return redirect()->route('user.index');
     }
 
-    public function showPokemons()
+    public function showPokemons(Request $request)
     {
         if(!$this->validateSession()){
             return view('index');
         }
 
+        $offset = $request->offset ?? 0;
+        $limit = $request->limit ?? 10;
+        $pokemon = new Pokemon();
         return view('pokemons',[
-            'pokemons'=>Pokemon::showAll()
+            'pokemons' => $pokemon->pokemonsRandom($limit)
         ]);
-    }
-
-    protected function validateSession()
-    {
-        if (Session::has('user')) {
-            return true;    
-        }else{
-            return false;
-        }
     }
 }
