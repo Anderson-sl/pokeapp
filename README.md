@@ -24,17 +24,17 @@ O intuito da remodelagem do Back-end para o framework Laravel foi a atualizaçã
 #### Terceira versão
 O Projeto foi atualizado para a versão 10 do Laravel e dockerizado, como forma de facilitar sua execução em ambientes variados.
 
-![Tela Inicial](https://github.com/Anderson-sl/pokeapp/blob/main/telas/tela1_login.png?raw=true)
+![Tela Inicial](https://github.com/Anderson-sl/pokeapp/blob/master/telas/tela1_login.png?raw=true)
 
-![Tela de Login](https://github.com/Anderson-sl/pokeapp/blob/main/telas/tela2_login.png?raw=true)
+![Tela de Login](https://github.com/Anderson-sl/pokeapp/blob/master/telas/tela2_login.png?raw=true)
 
-![Tela de Cadastro](https://github.com/Anderson-sl/pokeapp/blob/main/telas/tela1_cadastro.png?raw=true)
+![Tela de Cadastro](https://github.com/Anderson-sl/pokeapp/blob/master/telas/tela1_cadastro.png?raw=true)
 
-![Tela Home](https://github.com/Anderson-sl/pokeapp/blob/main/telas/tela1_principal.png?raw=true)
+![Tela Home](https://github.com/Anderson-sl/pokeapp/blob/master/telas/tela1_principal.png?raw=true)
 
-![Tela de dados do Usuario](https://github.com/Anderson-sl/pokeapp/blob/main/telas/tela1_perfil.png?raw=true)
+![Tela de dados do Usuario](https://github.com/Anderson-sl/pokeapp/blob/master/telas/tela1_perfil.png?raw=true)
 
-![Tela de Captura de Pokémons](https://github.com/Anderson-sl/pokeapp/blob/main/telas/tela1_pokemons.png?raw=true)
+![Tela de Captura de Pokémons](https://github.com/Anderson-sl/pokeapp/blob/master/telas/tela1_pokemons.png?raw=true)
 
 O Pokeapp roda em cima do docker com containers de Laravel, Postgres, PHP Fpm,  PHP, Nginx, redis, vite, composer
 
