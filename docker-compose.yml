@@ -1,0 +1,55 @@
+version: '3.3'
+networks:
+  poke-network:
+    name: poke-network
+    driver: bridge
+services:
+  poke-server:
+    container_name: poke-server
+    build: ./docker/server/
+    ports: 
+     - 8080:80
+    volumes:
+      - ./:/var/www/
+      - ./docker/server/conf.d/:/etc/nginx/conf.d/
+    restart: 'always'
+    networks:
+      - poke-network
+  poke-php-fpm:
+    container_name: poke-php-fpm
+    build: ./docker/php-fpm/
+    restart: 'always'
+    volumes:
+      - ./:/var/www/
+    depends_on:
+      - poke-composer
+    networks:
+      - poke-network
+  poke-composer:
+    container_name: poke-composer
+    build: ./docker/composer/
+    restart: 'always'
+    user: "1000:1000"
+    volumes:
+      - ./:/app/
+    command: install
+  poke-db:
+    container_name: poke-db
+    build: ./docker/db/
+    restart: 'always'
+    volumes:
+      - ./:/var/www
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - 5435:5432
+    networks:
+      - poke-network
+  poke-redis:
+    container_name: poke-redis
+    build: ./docker/redis/
+    restart: 'always'
+    ports:
+      - 63790:6379
+    networks:
+      - poke-network

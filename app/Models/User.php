@@ -24,7 +24,7 @@ class User extends Authenticatable
 
     public function pokemons()
     {
-        $pokemons = $this->hasMany(Pokemon::class,'id_user','id')->get();
+        $pokemons = $this->hasMany(PokemonUser::class, 'id_user', 'id')->get();
         return $pokemons; 
     }
 
