@@ -20,59 +20,59 @@ $(document).ready(function(){
 				}
 			});
 
-				/*Fim Controle*/
+			/*Fim Controle*/
 
-	function progressoHtml(){
-		return "<div class='box-progresso'><div id='progresso'><div class='progresso-wraper'><div class='progresso-conteudo'><p>carregando</p><div class='progresso-animacao'></div></div></div></div><div class='clear'></div></div>";
-	}
-
-	function dadosUsuario(){
-		/*Ação do botão editar*/
-		$("#btn-editar-conta").click(function(){
-			$(".editar-perfil").toggleClass("hide");
-			$(".excluir-perfil").addClass("hide");
-		});
-
-	
-	/*Ação do botão excluir*/
-	$("#btn-excluir-conta").click(function(){
-		if(confirm("Essa ação irá excluir sua conta e seus dados já salvos! Deseja realmente excluir sua conta?")){
-			$(".excluir-perfil").removeClass("hide");
-			$(".editar-perfil").addClass("hide");
-		}else{
-			$(".excluir-perfil").addClass("hide");
-		}
-	});
-	
-
-	
-	
-	/*Ação do botão descartar pokémon*/
-	$(".btn-descartar button").click(function(){
-		let botao = $(this).val().split(",");
-		if(confirm("Você realmente deseja descartar o Pokemon "+botao[1].toUpperCase()+"?")){
-			$.ajax({
-				url:"../controle/Controller.php",
-				dataType: "json",
-				data: {"pokemon_excluir":botao[0]},
-				type: "post",
-				error:function(e){
-
-				},
-				success:function(e){
-					feedBack(e.html,e.status);
-					$(location).attr("href","dadosUsuario.php");
+			function progressoHtml(){
+				return "<div class='box-progresso'><div id='progresso'><div class='progresso-wraper'><div class='progresso-conteudo'><p>carregando</p><div class='progresso-animacao'></div></div></div></div><div class='clear'></div></div>";
+			}
+		
+			function dadosUsuario(){
+				/*Ação do botão editar*/
+				$("#btn-editar-conta").click(function(){
+					$(".editar-perfil").toggleClass("hide");
+					$(".excluir-perfil").addClass("hide");
+				});
+		
+			
+			/*Ação do botão excluir*/
+			$("#btn-excluir-conta").click(function(){
+				if(confirm("Essa ação irá excluir sua conta e seus dados já salvos! Deseja realmente excluir sua conta?")){
+					$(".excluir-perfil").removeClass("hide");
+					$(".editar-perfil").addClass("hide");
+				}else{
+					$(".excluir-perfil").addClass("hide");
 				}
 			});
-		}else{
-				
-		}
-	});
+			
+		
+			
+			
+			/*Ação do botão descartar pokémon*/
+			$(".btn-descartar button").click(function(){
+				let botao = $(this).val().split(",");
+				if(confirm("Você realmente deseja descartar o Pokemon "+botao[1].toUpperCase()+"?")){
+					$.ajax({
+						url:"../controle/Controller.php",
+						dataType: "json",
+						data: {"pokemon_excluir":botao[0]},
+						type: "post",
+						error:function(e){
+		
+						},
+						success:function(e){
+							feedBack(e.html,e.status);
+							$(location).attr("href","dadosUsuario.php");
+						}
+					});
+				}else{
+						
+				}
+			});
 
 
-}
+	}
 
-function acaoEditarExcluir(){
+	function acaoEditarExcluir(){
 
 		/*Ação ao submeter formulario de edição de perfil*/
 			$("#form-editar-perfil").submit(function(){

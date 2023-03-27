@@ -1,0 +1,10 @@
+FROM node:19-alpine
+WORKDIR /var/www
+ARG USER_DEFAULT=default
+RUN apk add bash
+RUN echo $USER_DEFAULT
+RUN adduser -D -g "$USER_DEFAULT" $USER_DEFAULT
+RUN echo $USER_DEFAULT:123456 | chpasswd
+RUN adduser $USER_DEFAULT wheel
+RUN addgroup $USER_DEFAULT $USER_DEFAULT
+EXPOSE 443

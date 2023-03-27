@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Http;
 
-class Pokemon extends Model
+class Pokemon extends ModelBase
 {
+
     use HasFactory;
+    public $baseExternalUrl = '';
     protected $table = 'pokemons';
-    public $incrementing = false;
     protected $primaryKey = 'pkm_id';
     protected $fillable = [
         'pkm_id',
@@ -21,6 +22,17 @@ class Pokemon extends Model
         'pkm_image',
         'pkm_url',
     ];
+
+    public function __construct(array $attributes = [])
+    {
+        $this->baseExternalUrl = getUrlBasePokemon().'pokemon/';
+        parent::__construct($attributes);
+    }
+
+    public function user()
+    {
+        return $this->belongsToMany(User::class, 'pokemons_users', 'pokemon_id', 'user_id');
+    }
 
     public function abilities()
     {

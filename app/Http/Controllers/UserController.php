@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\JobSendEmail;
 use App\Models\User;
 use App\Models\Pokemon;
 use Illuminate\Http\Request;
@@ -20,10 +21,10 @@ class UserController extends Controller
         return $this->validateSession() ? view('home') : view('index');
     }
 
-    public function validaLogin(Request $request)
+    public function validaEmail(Request $request)
     {   
         $this->validateSession() ? '' : view('index');
-        $user = User::where('login',$request->login)->first();
+        $user = User::where('email',$request->email)->first();
         $result = [];
         if(is_null($user))
         {
@@ -44,7 +45,10 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
-       $user = User::where('login',$request->login)->first();
+       $user = User::where('email',$request->email)
+                    ->whereNotNull('registed_at')
+                    ->first();
+
 
        if(!is_null($user))
        {
@@ -76,19 +80,23 @@ class UserController extends Controller
     {
         $user = new User();
         $user->name = $request->name;
-        $user->login = $request->login;
+        $user->email = $request->email;
         $user->password = Hash::make($request->password);
-        $return = $user->save();
-        $result = [];
-        if($return)
+        $user->save();
+
+        if($user->getKey())
         {
-            $result = [
+            JobSendEmail::dispatch($user->email);
+            return [
                 'status'=>true,
                 'message'=> 'Cadastro realizado com sucesso'
             ];
         }
-        echo json_encode($result);        
-        return;
+        
+        return [
+            'status'=>false,
+            'message'=> 'Falha ao tentar cadastrar usuario'
+        ];
     }
 
     /**
@@ -103,7 +111,7 @@ class UserController extends Controller
             return view('index');
         }
 
-        $poke = $user->findPokemons($user->pokemons());
+        $poke = $user->pokemons;
 
         return view('profile',[
             'pokemons'=> $poke

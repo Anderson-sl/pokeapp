@@ -1,0 +1,58 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app-de66c893.css",
+    "isEntry": true,
+    "src": "resources/css/app.css"
+  },
+  "resources/img/logo-crud-3.png": {
+    "file": "assets/logo-crud-3-4ed993c7.js",
+    "isEntry": true,
+    "src": "resources/img/logo-crud-3.png"
+  },
+  "resources/img/menu-mobile-hover.png": {
+    "file": "assets/menu-mobile-hover-4ed993c7.js",
+    "isEntry": true,
+    "src": "resources/img/menu-mobile-hover.png"
+  },
+  "resources/img/menu-mobile.png": {
+    "file": "assets/menu-mobile-4ed993c7.js",
+    "isEntry": true,
+    "src": "resources/img/menu-mobile.png"
+  },
+  "resources/img/pokemon.png": {
+    "file": "assets/pokemon-4ed993c7.js",
+    "isEntry": true,
+    "src": "resources/img/pokemon.png"
+  },
+  "resources/js/app.js": {
+    "assets": [
+      "assets/logo-crud-3-9d4826dd.png",
+      "assets/menu-mobile-01294069.png",
+      "assets/menu-mobile-hover-90faffc4.png",
+      "assets/pokemon-892a1fc8.png"
+    ],
+    "file": "assets/app-496f0bfa.js",
+    "isEntry": true,
+    "src": "resources/js/app.js"
+  },
+  "resources/js/bootstrap.js": {
+    "file": "assets/bootstrap-31eab023.js",
+    "isEntry": true,
+    "src": "resources/js/bootstrap.js"
+  },
+  "resources/js/jquery-3.5.1.min.js": {
+    "file": "assets/jquery-3.5.1.min-a927024d.js",
+    "isEntry": true,
+    "src": "resources/js/jquery-3.5.1.min.js"
+  },
+  "resources/js/script-cacar.js": {
+    "file": "assets/script-cacar-9d4b8036.js",
+    "isEntry": true,
+    "src": "resources/js/script-cacar.js"
+  },
+  "resources/js/script-dados-usuario.js": {
+    "file": "assets/script-dados-usuario-4289d0f3.js",
+    "isEntry": true,
+    "src": "resources/js/script-dados-usuario.js"
+  }
+}

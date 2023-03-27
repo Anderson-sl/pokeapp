@@ -24,20 +24,20 @@ $(document).ready(function () {
         $('#container-usuario').append('<br>Teste: ' + errorThrown);
       }
     });
+
     /*Fim Controle*/
 
     function progressoHtml() {
       return "<div class='box-progresso'><div id='progresso'><div class='progresso-wraper'><div class='progresso-conteudo'><p>carregando</p><div class='progresso-animacao'></div></div></div></div><div class='clear'></div></div>";
     }
-
     function dadosUsuario() {
       /*Ação do botão editar*/
       $("#btn-editar-conta").click(function () {
         $(".editar-perfil").toggleClass("hide");
         $(".excluir-perfil").addClass("hide");
       });
-      /*Ação do botão excluir*/
 
+      /*Ação do botão excluir*/
       $("#btn-excluir-conta").click(function () {
         if (confirm("Essa ação irá excluir sua conta e seus dados já salvos! Deseja realmente excluir sua conta?")) {
           $(".excluir-perfil").removeClass("hide");
@@ -46,11 +46,10 @@ $(document).ready(function () {
           $(".excluir-perfil").addClass("hide");
         }
       });
-      /*Ação do botão descartar pokémon*/
 
+      /*Ação do botão descartar pokémon*/
       $(".btn-descartar button").click(function () {
         var botao = $(this).val().split(",");
-
         if (confirm("Você realmente deseja descartar o Pokemon " + botao[1].toUpperCase() + "?")) {
           $.ajax({
             url: "../controle/Controller.php",
@@ -68,7 +67,6 @@ $(document).ready(function () {
         } else {}
       });
     }
-
     function acaoEditarExcluir() {
       /*Ação ao submeter formulario de edição de perfil*/
       $("#form-editar-perfil").submit(function () {
@@ -102,8 +100,8 @@ $(document).ready(function () {
           }
         });
       });
-      /*Ação ao submeter formulario de exclusão da conta*/
 
+      /*Ação ao submeter formulario de exclusão da conta*/
       $("#form-excluir-perfil").submit(function () {
         event.preventDefault();
         var id = $("#excluir").val();
@@ -135,11 +133,10 @@ $(document).ready(function () {
       });
     }
   });
-  /*Função que renderiza mensagem na div feedback*/
 
+  /*Função que renderiza mensagem na div feedback*/
   function feedBack(msg, cod) {
     resetMsg();
-
     if (cod == 1) {
       $("#feedback").fadeIn(500, function () {
         $("#feedback").addClass("feedback sucesso");
@@ -151,14 +148,11 @@ $(document).ready(function () {
         $("#feedback").html("<p>" + msg + "</p>");
       });
     }
-
     $("html,body").animate({
       scrollTop: 0
     }, "fast");
   }
   /*Reseta mensagem da div feedback*/
-
-
   function resetMsg() {
     $("#feedback").fadeOut(500, function () {
       $("#feedback").html("");

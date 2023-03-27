@@ -19,7 +19,7 @@ Route::get('/',[UserController::class,'index'])->name('user.index');
 Route::get('/cacar_pokemon',[PokemonController::class,'showPokemons'])->name('user.show.pokemons');
 Route::get('/exit',[UserController::class,'exit'])->name('user.exit');
 /*POST*/
-Route::post('/usuario/cadastro/validaLogin',[UserController::class,'validaLogin'])->name('user.valida.login');
+Route::post('/usuario/cadastro/validaEmail',[UserController::class,'validaEmail'])->name('user.valida.email');
 Route::post('/usuario/acessar',[UserController::class,'login'])->name('user.login');
 Route::post('/pokemon/buscar',[PokemonController::class,'findByName'])->name('poke.find.name');
 

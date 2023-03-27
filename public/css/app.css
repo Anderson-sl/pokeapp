@@ -78,9 +78,13 @@ html, body{
 /*Classe de Progresso e Carregamento*/
 .box-progresso{
     z-index: 999;
-    position: relative;
+    position: fix;
     display: inline-block;
-    width: 100%;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    left: 0;
+    background-color: #009fe8;
 }
 
 #progresso{
@@ -121,39 +125,10 @@ html, body{
         height: 100%;
         border-radius: 50%;
         border-top: 10px solid rgb(255,0,0);
-        -webkit-animation-name: animacao-progresso;
-                animation-name: animacao-progresso;
-        -webkit-animation-duration: 1s;
-                animation-duration: 1s;
-        -webkit-animation-iteration-count: infinite;
-                animation-iteration-count: infinite;
+        animation-name: animacao-progresso;
+        animation-duration: 1s;
+        animation-iteration-count: infinite;
 }
-    @-webkit-keyframes animacao-progresso{
-        0%{
-            transform: rotate(0deg);
-        }
-        14.28%{
-             transform: rotate(45deg);
-        }
-        28.56%{
-             transform: rotate(90deg);
-        }
-        42.84%{
-             transform: rotate(135deg);
-        }
-        57.12%{
-            transform: rotate(180deg);
-        }
-        71.40%{
-            transform: rotate(225deg);
-        }
-        85.68%{
-            transform: rotate(270deg);
-        }
-        99.96%{
-           transform: rotate(315deg);
-        }
-    }
     @keyframes animacao-progresso{
         0%{
             transform: rotate(0deg);
@@ -383,23 +358,9 @@ header a{
     left: 100%;
     width: 200%;
     height: 100%;
-   -webkit-animation-name: slide_pokemon;
-           animation-name: slide_pokemon;
-   -webkit-animation-duration: 5s;
-           animation-duration: 5s;
-   -webkit-animation-iteration-count: 1;
-           animation-iteration-count: 1;
-}
-
-@-webkit-keyframes slide_pokemon{
-    0%{
-      display: initial;
-      left: -100%;  
-    }
-    100%{
-      display: none;
-      left: 200%;
-    }
+   animation-name: slide_pokemon;
+   animation-duration: 5s;
+   animation-iteration-count: 1;
 }
 
 @keyframes slide_pokemon{
@@ -419,38 +380,15 @@ header a{
     max-width: 1000px;
     height: 100%;
     margin: 0 auto;
-    background-image: url("../images/pokemon.png");
+    background-image: url("/images/pokemon.png");
     background-size: 100% auto;
     background-position: center;
     background-repeat: no-repeat;
-    -webkit-animation-name: pokemon;
-            animation-name: pokemon;
-    -webkit-animation-duration: 2s;
-            animation-duration: 2s;
-    -webkit-animation-delay: 5s;
-            animation-delay: 5s;
-    -webkit-animation-iteration-count: 1;
-            animation-iteration-count: 1;
+    animation-name: pokemon;
+    animation-duration: 2s;
+    animation-delay: 5s;
+    animation-iteration-count: 1;
     overflow: hidden;
-}
-
-@-webkit-keyframes pokemon{
-    0%{
-        transform: rotateY(0deg);
-    }
-    20%{
-        transform: rotateY(20deg);
-    }
-    40%{
-        transform: rotateY(0deg);   
-    }
-    60%{
-        transform: rotateY(20deg)   
-    }
-    80%{
-        transform: rotateY(0deg)   
-    }
-
 }
 
 @keyframes pokemon{
@@ -621,49 +559,25 @@ header a{
     padding: 20px 5px;
     border-radius: 15px;
     border: 0;
-    -webkit-animation-name: anima-container-form;
-            animation-name: anima-container-form;
-    -webkit-animation-duration: 1s;
-            animation-duration: 1s;
-    -webkit-animation-iteration-count: 1;
-            animation-iteration-count: 1;
+    animation-name: anima-container-form;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
 }
 
 #formulario.anima-login form{
-    -webkit-animation-name: anima-conteudo-form;
-            animation-name: anima-conteudo-form;
-    -webkit-animation-duration: 2s;
-            animation-duration: 2s;
-    -webkit-animation-iteration-count: 1;
-            animation-iteration-count: 1;
+    animation-name: anima-conteudo-form;
+    animation-duration: 2s;
+    animation-iteration-count: 1;
     opacity: 100%;
     display: inline-block;
 }
 
 #formulario.anima-login a{
-    -webkit-animation-name: anima-conteudo-form;
-            animation-name: anima-conteudo-form;
-    -webkit-animation-duration: 2s;
-            animation-duration: 2s;
-    -webkit-animation-iteration-count: 1;
-            animation-iteration-count: 1;
+    animation-name: anima-conteudo-form;
+    animation-duration: 2s;
+    animation-iteration-count: 1;
     opacity: 100%;
     display: block;
-}
-
-@-webkit-keyframes anima-container-form{
-    0%{
-        width: 130px;
-        height: 130px;
-        border-radius: 50%;
-    }
-
-    100%{
-        width: 100%;
-        max-width: 300px;
-        height: auto;
-        border-radius: 15px;
-    }
 }
 
 @keyframes anima-container-form{
@@ -678,20 +592,6 @@ header a{
         max-width: 300px;
         height: auto;
         border-radius: 15px;
-    }
-}
-
-@-webkit-keyframes anima-conteudo-form{
-    0%{
-        opacity: 0;
-    }
-
-    50%{
-        opacity: 0;
-    }
-
-    100%{
-        opacity: 100%;
     }
 }
 
@@ -947,11 +847,11 @@ header a{
 }
 
 .menu-ativado{
-    background-image: url("../images/menu-mobile-hover.png");
+    background-image: url("/images/menu-mobile-hover.png");
 }
 
 .menu-desativado{
-    background-image: url("../images/menu-mobile.png");   
+    background-image: url("/images/menu-mobile.png");   
 }
 
 #menu{
@@ -1031,24 +931,9 @@ p.rotulo_informativo{
     font-weight: bold;
     text-align: center;
     color: rgb(100,100,100);
-    -webkit-animation-name: piscar;
-            animation-name: piscar;
-    -webkit-animation-duration: 3s;
-            animation-duration: 3s;
-    -webkit-animation-iteration-count: infinite;
-            animation-iteration-count: infinite;
-}
-
-@-webkit-keyframes piscar{
-    0%{
-      color: rgb(100,100,100);  
-    }
-    50%{
-      color: rgb(255,0,0);  
-    }
-    100%{
-      color: rgb(100,100,100);    
-    }
+    animation-name: piscar;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
 }
 
 @keyframes piscar{

@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class PokemonUser extends Model
 {
     use HasFactory;
-    protected $table = 'tbpokemons';
+    protected $table = 'pokemons_users';
+    protected $primaryKey = 'pokemon_id';
     protected $fillable = [
-        'index',
-        'id_user'
+        'pokemon_id',
+        'user_id'
     ];
 }
