@@ -8,8 +8,8 @@ CREATE TABLE public.abilities (
 	abt_id int8 NOT NULL,
 	abt_name varchar(255) NOT NULL,
 	abt_url varchar(255) NOT NULL,
-	created_at timestamp(0) NULL,
-	updated_at timestamp(0) NULL,
+	created_at timestamptz NULL DEFAULT(now()),
+	updated_at timestamptz NULL,
 	CONSTRAINT abilities_pkey PRIMARY KEY (abt_id)
 );
 
@@ -19,19 +19,20 @@ CREATE TABLE public.abilities (
 
 -- DROP TABLE public.tbusers;
 
-CREATE TABLE public.tbusers (
+CREATE TABLE public.users (
 	id bigserial NOT NULL,
 	"name" varchar(255) NOT NULL,
-	login varchar(255) NOT NULL,
+	"email" varchar(255) NOT NULL,
 	"password" varchar(255) NOT NULL,
-	created_at timestamp(0) NULL DEFAULT(now()),
-	updated_at timestamp(0) NULL,
-	CONSTRAINT tbusers_login_unique UNIQUE (login),
+	created_at timestamptz NULL DEFAULT(now()),
+	updated_at timestamptz NULL,
+	registed_at timestamptz NULL,
+	CONSTRAINT tbusers_login_unique UNIQUE (email),
 	CONSTRAINT tbusers_pkey PRIMARY KEY (id)
 );
 
-INSERT INTO tbusers("name", "login", "password") 
-VALUES('Padrão', 'default', '$2a$10$TeboNsSDle1cfYDcd4bj1epNLmuCfYIsrzyx3oBlepRtpnyda8fqi');
+INSERT INTO users("name", "email", "password", "registed_at") 
+VALUES('Padrão', 'default@mail.com', '$2a$10$TeboNsSDle1cfYDcd4bj1epNLmuCfYIsrzyx3oBlepRtpnyda8fqi', now());
 
 -- public.failed_jobs definition
 
@@ -82,7 +83,7 @@ CREATE INDEX password_resets_email_index ON public.password_resets USING btree (
 -- Drop table
 
 -- DROP TABLE public.pokemons;
-
+CREATE SEQUENCE seq_pokemon START 1;
 CREATE TABLE public.pokemons (
 	pkm_id int8 NOT NULL,
 	pkm_name varchar(255) NOT NULL,
@@ -92,8 +93,8 @@ CREATE TABLE public.pokemons (
 	pkm_weight int4 NOT NULL,
 	pkm_image varchar(255) NOT NULL,
 	pkm_url varchar(255) NOT NULL,
-	created_at timestamp(0) NULL,
-	updated_at timestamp(0) NULL,
+	created_at timestamptz NULL DEFAULT(now()),
+	updated_at timestamptz NULL,
 	CONSTRAINT pokemons_pkey PRIMARY KEY (pkm_id)
 );
 
@@ -107,8 +108,8 @@ CREATE TABLE public.pokemon_types (
 	pkm_typ_id int8 NOT NULL,
 	pkm_typ_name varchar(255) NOT NULL,
 	pkm_typ_url varchar(255) NOT NULL,
-	created_at timestamp(0) NULL,
-	updated_at timestamp(0) NULL,
+	created_at timestamptz NULL DEFAULT(now()),
+	updated_at timestamptz NULL,
 	CONSTRAINT pokemon_types_pkey PRIMARY KEY (pkm_typ_id)
 );
 
@@ -138,12 +139,11 @@ CREATE INDEX sessions_user_id_index ON public.sessions USING btree (user_id);
 -- DROP TABLE public.pokemon_abilities;
 
 CREATE TABLE public.pokemon_abilities (
-	pkm_abt_id bigserial NOT NULL,
 	pkm_abt_pokemon int8 NOT NULL,
 	pkm_abt_abilities int8 NOT NULL,
-	created_at timestamp(0) NULL,
-	updated_at timestamp(0) NULL,
-	CONSTRAINT pokemon_abilities_pkey PRIMARY KEY (pkm_abt_id)
+	created_at timestamptz NULL DEFAULT(now()),
+	updated_at timestamptz NULL,
+	CONSTRAINT uk_pokemon_abilities_pkey UNIQUE (pkm_abt_pokemon, pkm_abt_abilities)
 );
 
 
@@ -162,8 +162,8 @@ CREATE TABLE public.pokemon_types_pokemons (
 	typ_pkm_id bigserial NOT NULL,
 	typ_pkm_pokemon int8 NOT NULL,
 	typ_pkm_type int8 NOT NULL,
-	created_at timestamp(0) NULL,
-	updated_at timestamp(0) NULL,
+	created_at timestamptz NULL DEFAULT(now()),
+	updated_at timestamptz NULL,
 	CONSTRAINT pokemon_types_pokemons_pkey PRIMARY KEY (typ_pkm_id)
 );
 
@@ -179,16 +179,12 @@ ALTER TABLE public.pokemon_types_pokemons ADD CONSTRAINT pokemon_types_pokemons_
 
 -- DROP TABLE public.tbpokemons;
 
-CREATE TABLE public.tbpokemons (
-	id bigserial NOT NULL,
-	"index" int4 NOT NULL,
-	id_user int8 NOT NULL,
-	created_at timestamp(0) NULL,
-	updated_at timestamp(0) NULL,
-	CONSTRAINT tbpokemons_pkey PRIMARY KEY (id)
+CREATE TABLE public.pokemons_users (
+	pokemon_id int4 NOT NULL,
+	user_id int8 NOT NULL,
+	created_at timestamptz NULL DEFAULT(now()),
+	updated_at timestamptz NULL,
+	PRIMARY KEY (pokemon_id, user_id),
+	CONSTRAINT fk_pkm_usr_pokemons FOREIGN KEY (pokemon_id) REFERENCES pokemons(pkm_id),
+	CONSTRAINT fk_pkm_usr_users FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
-
-
--- public.tbpokemons foreign keys
-
-ALTER TABLE public.tbpokemons ADD CONSTRAINT tbpokemons_id_user_foreign FOREIGN KEY (id_user) REFERENCES public.tbusers(id) ON DELETE CASCADE;

@@ -11,12 +11,11 @@ $(document).ready(function () {
   $("#btn-login-animado").click(function () {
     $("#formulario").addClass("anima-login");
   });
-  /*validação de senha no formulario de cadastro*/
 
+  /*validação de senha no formulario de cadastro*/
   $("#rsenha-cadastro").blur(function () {
     var senha = $("#senha-cadastro").val();
     var conf = $("#rsenha-cadastro").val();
-
     if (senha != conf) {
       $("#rsenha-cadastro").val("");
       $("#rsenha-cadastro").attr("placeHolder", "Tente novamente");
@@ -28,7 +27,6 @@ $(document).ready(function () {
   $("#form-cadastro").submit(function () {
     var senha = $("#senha-cadastro").val();
     var conf = $("#rsenha-cadastro").val();
-
     if (senha != conf) {
       $("#rsenha-cadastro").val("");
       $("#rsenha-cadastro").attr("placeHolder", "Tente novamente");
@@ -37,17 +35,16 @@ $(document).ready(function () {
       $("#rsenha-cadastro").removeClass("erro");
     }
   });
+
   /*Feedback*/
 
-  $('.feedback button').click(function () {
+  $('.feedback').click(function () {
     $('.feedback').css('display', 'none');
   });
+
   /*Controle menu*/
-
   /********************************************************/
-
   /*Ação do botão menu mobile */
-
   $(".menu-mobile").click(function () {
     $(".menu").toggleClass("controle-menu");
     $(".menu-mobile").toggleClass("menu-ativado");
@@ -124,7 +121,8 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 				}
 /******/ 				if(fulfilled) {
 /******/ 					deferred.splice(i--, 1)
-/******/ 					result = fn();
+/******/ 					var r = fn();
+/******/ 					if (r !== undefined) result = r;
 /******/ 				}
 /******/ 			}
 /******/ 			return result;
@@ -177,21 +175,23 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 			// add "moreModules" to the modules object,
 /******/ 			// then flag all "chunkIds" as loaded and fire callback
 /******/ 			var moduleId, chunkId, i = 0;
-/******/ 			for(moduleId in moreModules) {
-/******/ 				if(__webpack_require__.o(moreModules, moduleId)) {
-/******/ 					__webpack_require__.m[moduleId] = moreModules[moduleId];
+/******/ 			if(chunkIds.some((id) => (installedChunks[id] !== 0))) {
+/******/ 				for(moduleId in moreModules) {
+/******/ 					if(__webpack_require__.o(moreModules, moduleId)) {
+/******/ 						__webpack_require__.m[moduleId] = moreModules[moduleId];
+/******/ 					}
 /******/ 				}
+/******/ 				if(runtime) var result = runtime(__webpack_require__);
 /******/ 			}
-/******/ 			if(runtime) runtime(__webpack_require__);
 /******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
 /******/ 			for(;i < chunkIds.length; i++) {
 /******/ 				chunkId = chunkIds[i];
 /******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
 /******/ 					installedChunks[chunkId][0]();
 /******/ 				}
-/******/ 				installedChunks[chunkIds[i]] = 0;
+/******/ 				installedChunks[chunkId] = 0;
 /******/ 			}
-/******/ 			__webpack_require__.O();
+/******/ 			return __webpack_require__.O(result);
 /******/ 		}
 /******/ 		
 /******/ 		var chunkLoadingGlobal = self["webpackChunk"] = self["webpackChunk"] || [];

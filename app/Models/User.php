@@ -10,10 +10,12 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
-    protected $table = 'tbusers';
+    protected $table = 'users';
+    protected $with = ['pokemons'];
 
     protected $fillable = [
         'name',
+        'email',
         'login',
         'password'
     ];
@@ -24,8 +26,7 @@ class User extends Authenticatable
 
     public function pokemons()
     {
-        $pokemons = $this->hasMany(PokemonUser::class, 'id_user', 'id')->get();
-        return $pokemons; 
+        return $this->belongsToMany(Pokemon::class, 'pokemons_users', 'user_id', 'pokemon_id', 'id', 'pkm_id');
     }
 
     public function findPokemons($arr = [])

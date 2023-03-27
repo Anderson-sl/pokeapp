@@ -1,5 +1,21 @@
 
+const logoUrl = new URL(`../img/logo-crud-3.png`, import.meta.url).href;
+const activeMenuUrl = new URL(`../img/menu-mobile.png`, import.meta.url).href;
+const inactiveMenuUrl = new URL(`../img/menu-mobile-hover.png`, import.meta.url).href;
+const pokeUrl = new URL(`../img/pokemon.png`, import.meta.url).href;
 $(document).ready(function(){
+	$('.container-logo').ready(function() {
+		$('.container-logo').css('background-image', `url('${logoUrl}')`);
+	});
+	$('.menu-ativado').ready(function() {
+		$('.menu-ativado').css('background-image', `url('${activeMenuUrl}')`);
+	});
+	$('.menu-desativado').ready(function() {
+		$('.menu-desativado').css('background-image', `url('${inactiveMenuUrl}')`);
+	});
+	$('.container-principal').ready(function() {
+		$('.container-principal').css('background-image', `url('${pokeUrl}')`);
+	});
 	$("#btn-login-animado").click(function(){
 		$("#formulario").addClass("anima-login");
 	});
@@ -33,7 +49,7 @@ $(document).ready(function(){
 
 	/*Feedback*/
 
-	$('.feedback button').click(function(){
+	$('.feedback').click(function(){
 		$('.feedback').css('display','none');
 	});
 

@@ -4,6 +4,7 @@ networks:
     name: poke-network
     driver: bridge
 services:
+###SERVIDOR###
   poke-server:
     container_name: poke-server
     build: ./docker/server/
@@ -15,41 +16,131 @@ services:
     restart: 'always'
     networks:
       - poke-network
+    depends_on:
+      - poke-php-fpm
+    command: nginx -g "daemon off;"
+###NPM INSTALLER LIBS###
+  poke-npm-installer:
+    container_name: poke-npm-installer
+    build: 
+      context: ./docker/node-npm/
+      args:
+        - USER_DEFAULT=${USER}
+    volumes:
+      - ./:/var/www
+    networks:
+      - poke-network
+    command: bash -c "npm install && npm run build && exit 0"
+###NPM VITE###
+  poke-npm-vite:
+    container_name: poke-npm-vite
+    build: 
+      context: ./docker/node-npm/
+      args:
+        - USER_DEFAULT=${USER}
+    volumes:
+      - ./:/var/www
+    ports:
+      - 5173:5173
+    networks:
+      - poke-network
+    command: bash -c "npm run dev"
+    depends_on:
+      poke-npm-installer:
+        condition: "service_completed_successfully"
+###PHP FPM EXECUTE PROJECT###
   poke-php-fpm:
     container_name: poke-php-fpm
-    build: ./docker/php-fpm/
+    build: 
+      context: ./docker/php-fpm/
+      args:
+        - USER_DEFAULT=$USER
     restart: 'always'
     volumes:
       - ./:/var/www/
     depends_on:
-      - poke-composer
+      poke-composer-installer:
+        condition: "service_completed_successfully"
+      poke-redis:
+        condition: "service_started"
+      poke-npm-vite:
+        condition: "service_started"
+      poke-npm-installer:
+        condition: "service_completed_successfully"
     networks:
       - poke-network
-  poke-composer:
-    container_name: poke-composer
-    build: ./docker/composer/
+    
+    command: bash -c "cp .example.env .env && php artisan init:pokemon && php-fpm"
+#php artisan view:clear && php artisan optimize:clear && php artisan cache:clear
+###PHP QUEUE JOBS POKEMON###
+  poke-php-queue-pokemon:
+    container_name: poke-php-queue-pokemon
+    build: ./docker/queue/
     restart: 'always'
+    volumes:
+      - ./:/var/www/
+    command: "php artisan queue:work --queue=pokemon"
+    networks:
+      - poke-network
+    depends_on:
+      - poke-server
+###PHP QUEUE JOBS EMAIL###
+  poke-php-queue-email:
+    container_name: poke-php-queue-email
+    build: ./docker/queue/
+    restart: 'always'
+    volumes:
+      - ./:/var/www/
+    command: "php artisan queue:work --queue=email"
+    networks:
+      - poke-network
+    depends_on:
+      - poke-server
+###COMPOSER INSTALLER###
+  poke-composer-installer:
+    container_name: poke-composer-installer
+    build: ./docker/composer/
     user: "1000:1000"
     volumes:
-      - ./:/app/
-    command: install
+      - ./:/var/www
+    command: bash -c "composer install && exit 0"
+###DATABASE###
   poke-db:
     container_name: poke-db
     build: ./docker/db/
+    env_file: ./docker/db/docker.env
     restart: 'always'
     volumes:
       - ./:/var/www
-    environment:
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
     ports:
       - 5435:5432
     networks:
       - poke-network
+###REDIS TO CACHE AND QUEUES###
   poke-redis:
     container_name: poke-redis
     build: ./docker/redis/
     restart: 'always'
-    ports:
-      - 63790:6379
     networks:
       - poke-network
+    ports:
+      - 63791:6379
+###NODE+NPM###
+#  poke-node-npm:
+#    container_name: poke-node-npm
+#    build: 
+#      context: ./docker/node-npm/
+#      args:
+#        - USER_DEFAULT=$USER
+#    volumes:
+#      - ./:/var/www
+#    networks:
+#      - poke-network
+###COMPOSER###
+#  poke-composer:
+#    container_name: poke-composer
+#    build: ./docker/composer/
+#    user: "1000:1000"
+#    volumes:
+#      - ./:/var/www
+#    command: bash -c "composer require fideloper/proxy:^4.4"

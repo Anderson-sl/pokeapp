@@ -1,13 +1,11 @@
-
 <script type="text/javascript">
 $(document).ready(function(){
-
-/*Validação de login*/
+	/*Validação de login*/
 	$("#formulario").submit(function(){
 		event.preventDefault();
-		let login = $('input[type=text]#usuario-cadastro').val();
+		let email = $('input[type=text]#email-cadastro').val();
 		let senha = $('input[type=password]#senha-cadastro').val();
-		if(login.length > 0 && senha.length > 0){
+		if(email.length > 0 && senha.length > 0){
 			$.ajax({
 				'url':"{{ route('user.store') }}",
 				'dataType':'text',
@@ -22,9 +20,9 @@ $(document).ready(function(){
 					{
 						window.location.href = "{{route('user.index',['feedback'=>"+feedback.message+"])}}";
 					}else{
-						$("#usuario-cadastro").val("");
-						$("#usuario-cadastro").attr("placeHolder",user+" já existe");
-						$("#usuario-cadastro").addClass("erro");
+						$("#email-cadastro").val("");
+						$("#email-cadastro").attr("placeHolder",email+" já existe");
+						$("#email-cadastro").addClass("erro");
 						$("#senha-cadastro").attr("disabled",true);
 						$("#rsenha-cadastro").attr("disabled",true);
 					}
@@ -36,47 +34,45 @@ $(document).ready(function(){
 				}
 			});
 		}else{
-			alert("Os campos LOGIN e SENHA são obrigatórios!");
+			alert("Os campos 'email' e 'senha' são obrigatórios!");
 		}	
 	});
+	/*Regex validação de email*/
+	function validadorDeEmail(email){
+		return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
+	}
 	/*Validação de login no formulario de cadastro*/
-	$("#usuario-cadastro").blur(function(){
-		let user = $(this).val();
-		if(user.length == 0){
-				$("#usuario-cadastro").val("");
-				$("#usuario-cadastro").attr("placeHolder","Informe um usuario");
-				$("#usuario-cadastro").addClass("erro");
-				$("#senha-cadastro").attr("disabled",true);
-				$("#rsenha-cadastro").attr("disabled",true);
-				return;
+	$("#email-cadastro").blur(function(){
+		let email = $(this).val();
+		if(email.length == 0 || !validadorDeEmail(email)){
+			$("#email-cadastro").val("");
+			$("#email-cadastro").attr("placeHolder","Informe um email válido");
+			$("#email-cadastro").addClass("erro");
+			$("#senha-cadastro").attr("disabled",true);
+			$("#rsenha-cadastro").attr("disabled",true);
+			return;
 		}
 
 		$.ajax({
-			'url':"{{ route('user.valida.login') }}",
+			'url':"{{ route('user.valida.email') }}",
 			'type':'post',
 			'dateType':'json',
 			'data':$('#form-cadastro').serialize(),
 			'success':function(e){
-				alert(`Success:`);
-				console.log(e);
 				let feedback =  JSON.parse(e);
 				if(feedback.status){
-					$("#usuario-cadastro").removeClass("erro");
+					$("#email-cadastro").removeClass("erro");
 					$("#senha-cadastro").attr("disabled",false);
 					$("#rsenha-cadastro").attr("disabled",false);
 				}else{
-					$("#usuario-cadastro").val("");
-					$("#usuario-cadastro").attr("placeHolder",user+" já existe");
-					$('.feedback p').html(user+ ' já existe');
-					$('.feedback').css('display','inline-block');
-					$('.feedback').addClass('erro');
-					$("#usuario-cadastro").addClass("erro");
+					$("#email-cadastro").val("");
+					$("#email-cadastro").attr("placeHolder",email+" já existe");
+					$("#email-cadastro").addClass("erro");
 					$("#senha-cadastro").attr("disabled",true);
 					$("#rsenha-cadastro").attr("disabled",true);
 				}
 			},
 			'error':function(e){
-				alert(`Error:`);
 				console.log(e);
 			}
 		});
@@ -85,6 +81,7 @@ $(document).ready(function(){
 
 	$('.btn-capturar label').click(function(){
 		let element = $(this.parentElement).serialize();
+		console.log(element);
 		$.ajax({
 			'url':"{{ route('poke.store') }}",
 			'type':'post',
@@ -92,26 +89,30 @@ $(document).ready(function(){
 			'data':element,
 			'success' : function(e){
 				if(e.status){
-					$('#feedback p').html(e.message);
+					$('#feedback p').html(e?.message);
 					$('#feedback').addClass('ativo sucesso').delay(10000).queue(function(){
-							$(this).removeClass('ativo sucesso')
+						$('#feedback').removeClass('ativo erro');
 					});				
 				}else{
-					$('#feedback p').html(e.message);
+					$('#feedback p').html(e?.message);
 					$('#feedback').addClass('ativo erro').delay(10000).queue(function(){
-							$('#feedback').removeClass('ativo erro')
+							$('#feedback').removeClass('ativo erro');
 					});				
 				}
 			},
 			'error' : function(e){
-				$('.feedback').html('<p>Erro ao tentar capturar o pokemon</p>');
-				$('.feedback').addClass('ativo erro').delay(10000).queue(function(){
-						$('.feedback').removeClass('ativo erro')
-				});				
 				console.log(e.responseJSON.message);
+				callError('<p>Erro ao tentar capturar o pokemon</p>');
 			}
 		});
 	});
+
+	function callError(message) {
+		$('#feedback').html(`${message}`);
+		$('#feedback').addClass('ativo erro').delay(10000).queue(function(){
+			$('#feedback').removeClass('ativo erro').finish();
+		});
+	}
 
 	/*Ação do botão editar*/
 	$("#btn-editar-conta").click(function(){
@@ -130,13 +131,9 @@ $(document).ready(function(){
 		}
 	});
 
-	$('.feedback').show().delay(10000).queue(function(){
-		$('.feedback').removeClass('ativo sucesso')
-	});
-
-	$('.feedback').click(function(){
+	$('#feedback').click(function(){
 		$(this).children('p').html('');
-		$(this).removeClass('ativo sucesso');
+		$(this).removeClass('ativo sucesso erro');
 	});
 	
 });

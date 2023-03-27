@@ -7,9 +7,8 @@
     <meta name="description" content="">
     <meta name="author" content="Anderson dos Santos">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
-    <link rel="stylesheet" href="{{ url(mix('css/app.css')) }}">
-    <script type="text/javascript" src="{{ url(mix('js/jquery-3.5.1.min.js')) }}"></script>
-    <script type="text/javascript" src="{{ url(mix('js/app.js')) }}"></script>
+    <script type="text/javascript" src="{{ Illuminate\Support\Facades\Vite::asset('resources/js/jquery-3.5.1.min.js') }}"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
 
@@ -36,7 +35,7 @@
         <button id="btn-login-animado">Login</button>
         <form method="post" action="{{ route('user.login') }}" id="form-login">
             @csrf
-            <input type="text" id="login" name="login" placeholder="Login" required>
+            <input type="text" id="email" name="email" placeholder="Email" required>
 
             <input type="password" id="senha" name="password" placeholder="Senha" required>
             <label for="logar">Logar</label>

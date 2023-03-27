@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pokemon;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -41,27 +42,39 @@ class PokemonController extends Controller
      */
     public function store(Request $request)
     {
-        $id_pokemon = (explode(',', $request->id_pokemon));
-        $ar = $this->model->find($id_pokemon[0]);
-
-        $this->model->index = intval($id_pokemon[0]);
-        $this->model->id_user = (Session::get('user'))->id;
-
-        $result = $this->model->save() ? 
-            json_encode(
+        try {
+            $idPokemon = (explode(',', $request->id_pokemon));
+            $user = User::find((Session::get('user'))->id);
+            //$pokemonsSync = $user->pokemons()->sync([$idPokemon[0]]);
+            $pokemonIds = collect($user->pokemons->modelKeys());
+            if ($pokemonIds->contains($idPokemon[0])) {
+                return json_encode(
+                    [
+                        "status"=>false,
+                        "message"=>"O pokemon {$idPokemon[1]} já foi capturado"
+                    ], JSON_PRETTY_PRINT
+                );
+            }
+    
+            $pokemonIds->push((int) $idPokemon[0]);
+            $pokemonsSync = $user->pokemons()->sync($pokemonIds);
+            
+            if (count($pokemonsSync['attached'])|| count($pokemonsSync['updated'])) {
+                return json_encode(
+                    [
+                        "status"=>true,
+                        "message"=>"O pokemon {$idPokemon[1]} foi capturado com sucesso"
+                    ], JSON_PRETTY_PRINT
+                );
+            }
+        } catch(\Exception $err) {
+            return json_encode(
                 [
-                    "status"=>true,
-                    "message"=>"O pokemon {$id_pokemon[1]} foi capturado com sucesso"
-                ], JSON_PRETTY_PRINT
-            ) :
-            json_encode(
-                [
-                    "status"=>true,
-                    "message"=>"O pokemon {$id_pokemon[1]} não foi capturado"
+                    "status"=>false,
+                    "message"=>"Falha ao tentar capturar o pokemon {$idPokemon[1]}"
                 ], JSON_PRETTY_PRINT
             );
-        echo $result;
-        return;
+        }
     }
 
     /**
@@ -106,9 +119,8 @@ class PokemonController extends Controller
      */
     public function destroy(Request $request, Pokemon $poke)
     {
-        $result = $poke->delete();
-        $arr = [];
-        if(!$result || is_null($result)){
+        $result = (Session::get('user'))->pokemons()->detach($poke->primaryIndex);
+        if(!$result){
             return back()->with('feedback','Não foi possivel excluir o registro');
         }
         return back()->with('feedback','Registro excluído com sucesso');
@@ -121,37 +133,31 @@ class PokemonController extends Controller
         }
 
         $offset = $request->offset ?? 0;
-        $limit = $request->limit ?? 20;
-        $pokemon = new Pokemon();
+        $limit = $request->limit ?? 10;
+        $pokemon = Pokemon::whereNotNull('pkm_url')
+                        ->limit($limit)
+                        ->get();
         return view('pokemons',[
-            'pokemons' => $pokemon->random($limit)
+            'pokemons' => $pokemon
         ]);
     }
 
     public function findByName(Request $request)
     {
-        $pokemons = $request->pokemon == '' ? 
-            $this->model->pokemonsRandom() :
-            $this->model->where('pkm_name', $request->pokemon)->get();
-
-        if ($pokemons->count() > 0) {
+        if (!$request->pokemon) {
             return view('pokemons',[
-                'pokemons'=> $pokemons
+                'pokemons'=> $this->model->limit(10)->get()
             ]);
         }
 
-        $pokemons = getPokemonApi($request->pokemon);
-
-        if (! $pokemons) {
+        $pokemon = $this->model->getDataByName($request->pokemon);
+        if (empty($pokemon)) {
             return view('pokemons',[
-                'pokemons'=> []
+                'pokemons'=> $this->model->limit(10)->get()
             ]);
         }
-
-        $pokemons = [createPokemon($pokemons)];
-        
         return view('pokemons',[
-            'pokemons'=> $pokemons
+            'pokemons'=> [(object) $pokemon]
         ]);
     }
 }

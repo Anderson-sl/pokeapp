@@ -7,9 +7,8 @@
     <meta name="description" content="">
     <meta name="author" content="Anderson dos Santos">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
-    <link rel="stylesheet" href="{{ url(mix('css/app.css')) }}">
-    <script type="text/javascript" src="{{ url(mix('js/jquery-3.5.1.min.js')) }}"></script>
-    <script type="text/javascript" src="{{ url(mix('js/app.js')) }}"></script>
+    <script type="text/javascript" src="{{ Illuminate\Support\Facades\Vite::asset('resources/js/jquery-3.5.1.min.js') }}"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
 @include('templates.header_full')
@@ -65,7 +64,7 @@
                         <div class='container-organiza'>
                             <p>Peso: </p>
                             <b>
-                                {{$pokemon->weight}}
+                                {{$pokemon->pkm_weight}}
                             </b>
                         </div>
                     </div>
@@ -73,9 +72,9 @@
                     <div class='btn-capturar'>
                         <form method="POST">
                             @csrf
-                            <input type="hidden" name="id_pokemon" value="{{$pokemon->id}},{{$pokemon->name}}">
-                            <label for="capturar_{{$pokemon->id}}">Capturar</label>
-                            <input type="button" value='{{$pokemon->name}}' id="capturar_{{$pokemon->id}}" name="capturar" hidden>
+                            <input type="hidden" name="id_pokemon" value="{{$pokemon->pkm_id}},{{$pokemon->pkm_name}}">
+                            <label for="capturar_{{$pokemon->pkm_id}}">Capturar</label>
+                            <input type="button" value='{{$pokemon->pkm_name}}' id="capturar_{{$pokemon->pkm_id}}" name="capturar" hidden>
                         </form>
                     </div>
                 
